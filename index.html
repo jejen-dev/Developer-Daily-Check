@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevDailyCheck - Checklist Produktivitas Programmer</title>
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-code"></i>
+                <h1>DDC</h1>
+                <hr>
+                <p>DevDailyCheck</p>
+            </div>
+            <div class="header-controls">
+                <div class="date-display" id="currentDate"></div>
+                <button class="btn-icon" id="themeToggle" title="Toggle tema">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Stats -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon completed">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="completedCount">0</h3>
+                    <p>Tugas Selesai</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon pending">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="pendingCount">0</h3>
+                    <p>Tugas Tertunda</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon total">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalCount">0</h3>
+                    <p>Total Tugas</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-header">
+                <span>Progress Hari Ini</span>
+                <span id="progressPercentage">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="main-content">
+            <!-- Checklist Section -->
+            <div class="checklist-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-list-check"></i> Checklist Harian Programmer</h2>
+                    <div class="filter-options">
+                        <button class="btn-icon" id="showAll" title="Tampilkan semua">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-icon" id="showCompleted" title="Tampilkan selesai">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button class="btn-icon" id="showPending" title="Tampilkan tertunda">
+                            <i class="fas fa-clock"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="category-tabs">
+                    <div class="category-tab active" data-category="all">Semua</div>
+                    <div class="category-tab" data-category="morning">Pagi</div>
+                    <div class="category-tab" data-category="work">Kerja</div>
+                    <div class="category-tab" data-category="break">Istirahat</div>
+                    <div class="category-tab" data-category="evening">Sore/Malam</div>
+                    <div class="category-tab" data-category="learning">Belajar</div>
+                    <div class="category-tab" data-category="health">Kesehatan</div>
+                </div>
+
+                <div class="checklist-items" id="checklistItems">
+                    <!-- Checklist items akan di-generate oleh JavaScript -->
+                </div>
+
+                <!-- Bulk Actions -->
+                <div class="bulk-actions">
+                    <button class="bulk-btn secondary" id="selectAllBtn">
+                        <i class="fas fa-check-double"></i> Pilih Semua
+                    </button>
+                    <button class="bulk-btn" id="markAllCompleteBtn">
+                        <i class="fas fa-check-circle"></i> Tandai Semua Selesai
+                    </button>
+                    <button class="bulk-btn secondary" id="clearCompletedBtn">
+                        <i class="fas fa-trash"></i> Hapus Yang Selesai
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Add Task Form -->
+                <div class="add-task-form">
+                    <h2><i class="fas fa-plus-circle"></i> Tambah Tugas Baru</h2>
+                    <form id="taskForm">
+                        <div class="form-group">
+                            <label for="taskTitle">Judul Tugas</label>
+                            <input type="text" id="taskTitle" class="form-control"
+                                placeholder="Contoh: Review pull request" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="taskDescription">Deskripsi</label>
+                            <textarea id="taskDescription" class="form-control" rows="3"
+                                placeholder="Deskripsi detail tugas"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="taskCategory">Kategori</label>
+                                <select id="taskCategory" class="form-control" required>
+                                    <option value="morning">Pagi</option>
+                                    <option value="work">Kerja</option>
+                                    <option value="break">Istirahat</option>
+                                    <option value="evening">Sore/Malam</option>
+                                    <option value="learning">Belajar</option>
+                                    <option value="health">Kesehatan</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskPriority">Prioritas</label>
+                                <select id="taskPriority" class="form-control" required>
+                                    <option value="low">Rendah</option>
+                                    <option value="medium">Sedang</option>
+                                    <option value="high">Tinggi</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Tambah Tugas
+                        </button>
+                        <button type="button" class="reset-data-btn" id="resetDataBtn">
+                            <i class="fas fa-redo"></i> Reset ke Default
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Productivity Tips -->
+                <div class="productivity-tips">
+                    <h2><i class="fas fa-lightbulb"></i> Tips Produktivitas</h2>
+                    <!-- Tips Content -->
+                    <div class="tip-item">
+                        <h4><i class="fas fa-coffee"></i> Mulai dengan Rencana</h4>
+                        <p>Luangkan 10 menit di pagi hari untuk merencanakan tugas-tugas hari ini. Prioritaskan yang
+                            paling penting.</p>
+                    </div>
+                    <div class="tip-item">
+                        <h4><i class="fas fa-clock"></i> Teknik Pomodoro</h4>
+                        <p>Gunakan teknik 25 menit fokus kerja diikuti 5 menit istirahat untuk menjaga konsentrasi.</p>
+                    </div>
+                    <div class="tip-item">
+                        <h4><i class="fas fa-code-branch"></i> Review Kode</h4>
+                        <p>Sisihkan waktu untuk review kode sendiri sebelum push ke repository.</p>
+                    </div>
+                    <div class="tip-item">
+                        <h4><i class="fas fa-walking"></i> Istirahat Reguler</h4>
+                        <p>Jangan duduk terlalu lama. Berdiri dan berjalan setiap 60 menit untuk menjaga kesehatan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>DevDailyCheck &copy; 2026 - Checklist Produktivitas untuk Programmer</p>
+            <p>Tugas selesai: <span id="footerCompleted">0</span> dari <span id="footerTotal">0</span> tugas</p>
+            <p>IG: onyourjae_n</p>
+        </footer>
+    </div>
+
+    <!-- Completion Animation -->
+    <div class="completion-animation" id="completionAnimation">
+        <i class="fas fa-check-circle"></i> Tugas Selesai!
+    </div>
+
+    <!-- Link JavaScript -->
+    <script src="script.js"></script>
+</body>
+
+</html>
